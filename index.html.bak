@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infra-Calc: LLM Infrastructure Economics</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Chart.js with modules -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+    <!-- Ensure scripts only run when everything is loaded -->
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM fully loaded');
+            // Create a global property to indicate DOM is ready
+            window.domReady = true;
+            
+            // Dispatch a custom event
+            document.dispatchEvent(new Event('dom-ready'));
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Infra-Calc</h1>
+        <p>Calculate the economics of running LLM infrastructure</p>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="input-panel">
+                <h2>Input Parameters</h2>
+                
+                <div class="input-section">
+                    <h3>Business Model</h3>
+                    <div class="input-group">
+                        <label for="charge-per-minute">Charge per minute ($):</label>
+                        <input type="number" id="charge-per-minute" min="0" step="0.01" value="0.02">
+                    </div>
+                    <div class="input-group">
+                        <label for="utilization-rate">Daily utilization rate (hours):</label>
+                        <input type="number" id="utilization-rate" min="0" max="24" step="0.5" value="12">
+                    </div>
+                    <div class="input-group">
+                        <label for="concurrent-threads">Concurrent threads:</label>
+                        <input type="number" id="concurrent-threads" min="1" step="1" value="4">
+                    </div>
+                </div>
+
+                <div class="input-section">
+                    <h3>LLM Parameters</h3>
+                    <div class="input-group">
+                        <label for="llm-size">LLM size (billions of parameters):</label>
+                        <input type="number" id="llm-size" min="1" step="1" value="70">
+                    </div>
+                    <div class="input-group">
+                        <label for="inference-time">Average inference time per request (minutes):</label>
+                        <input type="number" id="inference-time" min="0.1" step="0.1" value="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="vram-required">VRAM required per thread (GB):</label>
+                        <input type="number" id="vram-required" min="1" step="1" value="40">
+                    </div>
+                </div>
+
+                <div class="input-section">
+                    <h3>Hardware Costs</h3>
+                    <div class="preset-buttons">
+                        <button class="preset-btn" data-preset="small">Small LLM (7-13B)</button>
+                        <button class="preset-btn" data-preset="medium">Medium LLM (30-40B)</button>
+                        <button class="preset-btn" data-preset="large">Large LLM (65-70B)</button>
+                        <button class="preset-btn" data-preset="server">Server Setup</button>
+                    </div>
+                    <div class="input-group">
+                        <label for="gpu-cost">GPU cost ($):</label>
+                        <input type="number" id="gpu-cost" min="0" step="100" value="3000">
+                    </div>
+                    <div class="input-group">
+                        <label for="cpu-cost">CPU cost ($):</label>
+                        <input type="number" id="cpu-cost" min="0" step="100" value="500">
+                    </div>
+                    <div class="input-group">
+                        <label for="ram-cost">RAM cost ($):</label>
+                        <input type="number" id="ram-cost" min="0" step="100" value="300">
+                    </div>
+                    <div class="input-group">
+                        <label for="other-hardware">Other hardware costs ($):</label>
+                        <input type="number" id="other-hardware" min="0" step="100" value="700">
+                    </div>
+                    <div class="input-group">
+                        <label for="hardware-lifespan">Hardware lifespan (years):</label>
+                        <input type="number" id="hardware-lifespan" min="1" step="1" value="3">
+                    </div>
+                </div>
+
+                <div class="input-section">
+                    <h3>Operational Costs</h3>
+                    <div class="input-group">
+                        <label for="electricity-cost">Electricity cost ($/kWh):</label>
+                        <input type="number" id="electricity-cost" min="0" step="0.01" value="0.15">
+                    </div>
+                    <div class="input-group">
+                        <label for="power-consumption">System power consumption (W):</label>
+                        <input type="number" id="power-consumption" min="0" step="50" value="800">
+                    </div>
+                    <div class="input-group">
+                        <label for="maintenance-cost">Monthly maintenance cost ($):</label>
+                        <input type="number" id="maintenance-cost" min="0" step="10" value="50">
+                    </div>
+                </div>
+
+                <button id="calculate-btn" class="primary-btn">Calculate</button>
+                <button id="reset-btn" class="secondary-btn">Reset to Defaults</button>
+            </div>
+
+            <div class="results-panel">
+                <h2>Results</h2>
+                
+                <div class="result-card">
+                    <h3>Profitability Summary</h3>
+                    <div class="result-item">
+                        <span>Monthly revenue:</span>
+                        <span id="monthly-revenue">$0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Monthly costs:</span>
+                        <span id="monthly-costs">$0.00</span>
+                    </div>
+                    <div class="result-item highlight">
+                        <span>Monthly profit:</span>
+                        <span id="monthly-profit">$0.00</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Profit margin:</span>
+                        <span id="profit-margin">0%</span>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>Break-even Analysis</h3>
+                    <div class="result-item">
+                        <span>Break-even time:</span>
+                        <span id="breakeven-time">0 months</span>
+                    </div>
+                    <div class="result-item">
+                        <span>ROI after hardware lifespan:</span>
+                        <span id="lifetime-roi">0%</span>
+                    </div>
+                </div>
+
+                <div class="result-card chart-card">
+                    <h3>Profit Over Time</h3>
+                    <canvas id="profit-chart"></canvas>
+                </div>
+
+                <div class="result-card chart-card">
+                    <h3>Cost Breakdown</h3>
+                    <canvas id="cost-breakdown-chart"></canvas>
+                </div>
+
+                <div class="result-card chart-card">
+                    <h3>Price Frontier</h3>
+                    <canvas id="price-frontier-chart"></canvas>
+                    <p class="chart-description">This chart shows the minimum price needed per minute to achieve profitability at different utilization rates.</p>
+                </div>
+                
+                <div class="result-card chart-card">
+                    <h3>Profitability Heatmap</h3>
+                    <div class="heatmap-controls">
+                        <div class="heatmap-axis-selector">
+                            <label for="heatmap-x-axis">X-Axis:</label>
+                            <select id="heatmap-x-axis">
+                                <option value="utilization">Daily Utilization (hours)</option>
+                                <option value="price">Price per Minute ($)</option>
+                                <option value="threads">Concurrent Threads</option>
+                            </select>
+                        </div>
+                        <div class="heatmap-axis-selector">
+                            <label for="heatmap-y-axis">Y-Axis:</label>
+                            <select id="heatmap-y-axis">
+                                <option value="price">Price per Minute ($)</option>
+                                <option value="utilization">Daily Utilization (hours)</option>
+                                <option value="threads">Concurrent Threads</option>
+                            </select>
+                        </div>
+                        <button id="generate-heatmap" class="secondary-btn">Generate Heatmap</button>
+                    </div>
+                    <div class="heatmap-container">
+                        <canvas id="profitability-heatmap"></canvas>
+                        <div id="heatmap-loading-indicator" class="loading" style="display: none;">Generating heatmap, please wait...</div>
+                    </div>
+                    <p class="chart-description">This heatmap shows profitability across different parameters. Red indicates loss, green indicates profit, and color intensity shows magnitude.</p>
+                </div>
+                
+                <div class="result-card chart-card">
+                    <h3>ROI Calculator</h3>
+                    <div class="roi-calculator">
+                        <div class="roi-sliders">
+                            <div class="slider-group">
+                                <label for="roi-utilization">Daily Utilization: <span id="roi-utilization-value">12</span> hours</label>
+                                <input type="range" id="roi-utilization" min="1" max="24" step="1" value="12">
+                            </div>
+                            <div class="slider-group">
+                                <label for="roi-price">Price per Minute: $<span id="roi-price-value">0.02</span></label>
+                                <input type="range" id="roi-price" min="0.01" max="0.1" step="0.01" value="0.02">
+                            </div>
+                            <div class="slider-group">
+                                <label for="roi-threads">Concurrent Threads: <span id="roi-threads-value">4</span></label>
+                                <input type="range" id="roi-threads" min="1" max="8" step="1" value="4">
+                            </div>
+                        </div>
+                        <div class="roi-result">
+                            <div class="roi-meter-container">
+                                <div class="roi-meter">
+                                    <div class="roi-meter-fill" id="roi-meter-fill"></div>
+                                </div>
+                                <div class="roi-value">ROI: <span id="roi-value">0</span>%</div>
+                                <div class="roi-time">Break-even: <span id="roi-breakeven">Never</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Infra-Calc - A tool for calculating LLM infrastructure economics</p>
+    </footer>
+
+    <script src="js/precalculated/results.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html> 
