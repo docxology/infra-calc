@@ -29,6 +29,10 @@ then serves the whole directory over a local HTTP server and opens the browser.
 - `run.py` rewrites `index.html` (after backing it up to `index.html.bak`) and
   appends to `css/` on each run — treat `visualizations/`, `js/precalculated/`,
   `index.html.bak` as generated artifacts, not hand-authored sources.
+- `js/main.js` boot: when the module loads while `document.readyState === 'loading'`,
+  init is wired to `DOMContentLoaded` (fixed 2026-08-30; a prior non-standard
+  'dom-ready' event never fired, leaving the dashboard blank).
+- `.gitignore` covers `__pycache__/`; do not commit Python bytecode.
 - No package manifest, no tests; `index.html.bak` is a backup, not a second entry point.
 
 ## Layout (verified by direct listing, 2026-08-29)

@@ -39,7 +39,7 @@ The calculator now includes:
 1. Clone this repository
 2. Install required dependencies:
    ```
-   pip install matplotlib numpy pillow
+   pip install matplotlib numpy
    ```
 3. Run the Python script:
    ```

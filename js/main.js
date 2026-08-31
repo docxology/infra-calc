@@ -287,7 +287,7 @@ function debounce(func, wait) {
 // Initialize the application when DOM is loaded
 if (document.readyState === 'loading') {
     // Add event listener if document is still loading
-    document.addEventListener('dom-ready', init);
+    document.addEventListener('DOMContentLoaded', init);
 } else {
     // Otherwise, run init now
     init();
