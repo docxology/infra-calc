@@ -67,7 +67,7 @@ Note: Direct HTML opening may not show charts correctly unless the Python script
 - `/css/` - Styling and animation effects
 - `/data/` - Default data for hardware costs, electricity rates, etc.
 - `/run.py` - Python script to generate visualizations and serve the app
-- `/visualizations/` - Generated chart images, animations, and calculation results
+- `/visualizations/` - Generated chart images and calculation results
 
 ## Customizing the Calculations
 

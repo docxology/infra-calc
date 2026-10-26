@@ -1845,7 +1845,7 @@ def main():
             print("✓ index.html already contains required scripts")
         
         # Count visualization files generated
-        vis_files = list(vis_dir.glob('*.png')) + list(vis_dir.glob('*.gif'))
+        vis_files = list(vis_dir.glob('*.png'))
         print(f"✓ Generated {len(vis_files)} visualization files")
         
         # Find an available port and start the server
