@@ -19,7 +19,7 @@ This tool helps answer questions like:
 - Visualize price frontiers and break-even points
 - Estimate profitability over time
 - Interactive heatmaps showing profitability across different parameters
-- Animated visualizations showing parameter relationships
+- GPU model comparison (memory, max threads, cost per thread)
 - Responsive UI with smooth transitions and effects
 
 ## Enhanced Visualizations
@@ -28,7 +28,7 @@ The calculator now includes:
 
 - **High-resolution charts** with improved color schemes and readability
 - **Interactive heatmaps** showing profitability across different parameter combinations
-- **Animated GIFs** showing how profitability changes with different thread counts
+- **GPU model comparison charts** (memory/thread capacity, LLM-size scaling, cost efficiency)
 - **Annotated visualizations** with key points, break-even markers, and trend highlights
 - **Smooth UI transitions** for a better user experience
 
@@ -43,10 +43,12 @@ The calculator now includes:
    ```
 3. Run the Python script:
    ```
-   python run.py
+   python3 run.py
+   python3 run.py --gpu 3   # pick a bundled GPU model (1-5; 1 = RTX 5090 default)
    ```
 4. The script will:
    - Generate comprehensive visualizations in the `/visualizations` folder
+   - Write pre-calculated values to `js/precalculated/results.js`
    - Start a local web server
    - Open the calculator in your web browser with pre-calculated values and animations
 
@@ -112,9 +114,10 @@ The enhanced visualizations include:
    - Break-even contour lines
    - Annotations for maximum profit points
 
-5. **Animated Visualization**
-   - Shows how profitability changes with different thread counts
-   - Helps understand the impact of scaling operations
+5. **GPU Model Analysis**
+   - Memory vs maximum concurrent threads per GPU model
+   - How LLM size limits threads on each GPU
+   - Cost per thread (cost efficiency) ranking of the bundled GPU models
 
 ## Understanding the Economics
 

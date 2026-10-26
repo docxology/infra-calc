@@ -1,8 +1,7 @@
 # AGENTS.md — `infra-calc/js`
 
-> Local-only path under `projects/ongoing/DataTools/` — matched by the
-> root `.gitignore` rule `projects/*`; never commit. Repo-wide policy:
-> see `/Volumes/external_drive/Git/template/projects/ongoing/AGENTS.md`.
+> Published copy of the local-only `projects/ongoing/DataTools/infra-calc` lane;
+> origin `github.com/docxology/infra-calc` — commit and push here normally.
 
 ## What this is
 

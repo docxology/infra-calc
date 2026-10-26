@@ -1,18 +1,13 @@
 #!/usr/bin/env python3
-import os
 import json
-import subprocess
 import webbrowser
 import time
-import math
 import http.server
 import socketserver
 import threading
 import sys
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 import numpy as np
-import shutil
 from pathlib import Path
 import argparse
 
@@ -1575,15 +1570,16 @@ document.addEventListener('DOMContentLoaded', function() {{
 }
 """
         
-        # Write the CSS file if it doesn't exist
+        # Write the CSS file if it doesn't exist, otherwise append the block once
+        css_marker = "/* Enhanced visualization styles added by generator */"
         css_file = css_dir / 'styles.css'
         if not css_file.exists():
             with open(css_file, 'w') as f:
                 f.write(css_code)
-        else:
-            # Append our styles to the existing file
+        elif css_marker not in css_file.read_text():
+            # Append our styles; re-running must not duplicate the block
             with open(css_file, 'a') as f:
-                f.write("\n\n/* Enhanced visualization styles added by generator */\n")
+                f.write(f"\n\n{css_marker}\n")
                 f.write(css_code)
     
     def modify_index_html(self):

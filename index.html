@@ -7,18 +7,6 @@
     <link rel="stylesheet" href="css/styles.css">
     <!-- Chart.js with modules -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-
-    <!-- Ensure scripts only run when everything is loaded -->
-    <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM fully loaded');
-            // Create a global property to indicate DOM is ready
-            window.domReady = true;
-            
-            // Dispatch a custom event
-            document.dispatchEvent(new Event('dom-ready'));
-        });
-    </script>
 </head>
 <body>
     <header>

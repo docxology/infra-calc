@@ -8,7 +8,7 @@ price frontiers, and profitability heatmaps, served as a browser UI.
 
 - `run.py` — CLI entry point (`--gpu N`, models 1–5) and built-in HTTP server;
   generates charts/visualizations and serves `index.html`
-- `index.html` (+ `index.html.bak` backup) — the calculator UI
+- `index.html` — the calculator UI (`index.html.bak` is a generated, gitignored backup)
 - `js/` — `calculator.js`, `roi-calculator.js`, `charts.js`,
   `chart-manager.js`, `chart-plugins.js`, `heatmap.js`, `debug.js`,
   `main.js`, plus `js/precalculated/`
@@ -19,9 +19,12 @@ price frontiers, and profitability heatmaps, served as a browser UI.
 ## Running
 
 ```bash
-python run.py            # default GPU model
-python run.py --gpu 3    # pick a GPU model (1-5; see run.py main())
+python3 run.py            # default GPU model
+python3 run.py --gpu 3    # pick a GPU model (1-5; see run.py main())
 ```
+
+The run rewrites `index.html` (backing it up to the gitignored `index.html.bak`),
+`js/precalculated/results.js`, and `visualizations/`.
 
 Dependencies per root `README.md`: matplotlib, numpy; the web interface is
 served with Python's `http.server`.

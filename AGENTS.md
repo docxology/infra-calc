@@ -1,8 +1,7 @@
 # AGENTS.md — `infra-calc`
 
-> Local-only path under `projects/ongoing/DataTools/` — matched by the
-> root `.gitignore` rule `projects/*`; never commit. Repo-wide policy:
-> see `/Volumes/external_drive/Git/template/projects/ongoing/AGENTS.md`.
+> Published copy of the local-only `projects/ongoing/DataTools/infra-calc` lane;
+> origin `github.com/docxology/infra-calc` — commit and push here normally.
 
 ## What this is
 
@@ -26,17 +25,22 @@ then serves the whole directory over a local HTTP server and opens the browser.
 
 ## Invariants / gotchas
 
-- `run.py` rewrites `index.html` (after backing it up to `index.html.bak`) and
-  appends to `css/` on each run — treat `visualizations/`, `js/precalculated/`,
-  `index.html.bak` as generated artifacts, not hand-authored sources.
+- `run.py` rewrites `index.html` (after backing it up to the gitignored
+  `index.html.bak`) and appends its style block to `css/styles.css` once — the
+  append is skipped when the block is already present (fixed 2026-10-25) — so
+  treat `visualizations/`, `js/precalculated/`, `index.html.bak` as generated
+  artifacts, not hand-authored sources.
 - `js/main.js` boot: when the module loads while `document.readyState === 'loading'`,
   init is wired to `DOMContentLoaded` (fixed 2026-08-30; a prior non-standard
-  'dom-ready' event never fired, leaving the dashboard blank).
+  'dom-ready' event never fired, leaving the dashboard blank). The `dom-ready`
+  shim that dispatched it was removed from `index.html` on 2026-10-25 — nothing
+  listens for that event.
 - `.gitignore` covers `__pycache__/`; do not commit Python bytecode.
-- No package manifest, no tests; `index.html.bak` is a backup, not a second entry point.
+- No package manifest, no tests; `index.html.bak` is a generated, gitignored
+  backup, not a second entry point.
 
 ## Layout (verified by direct listing, 2026-08-29)
 
 ```
-css/, data/, docs/, js/, visualizations/, .gitattributes, .gitignore, README.md, index.html, index.html.bak, run.py
+css/, data/, docs/, js/, visualizations/, .gitattributes, .gitignore, AGENTS.md, README.md, index.html, run.py
 ```

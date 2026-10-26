@@ -2,7 +2,7 @@
 
 ## Layout
 
-Static web app + Python driver. `run.py` (~1700 lines) computes the economics,
+Static web app + Python driver. `run.py` (~1900 lines) computes the economics,
 writes precalculated data and matplotlib visualizations, then serves the UI.
 All interactive logic lives in `js/` modules; `index.html` ties them together.
 
@@ -10,8 +10,9 @@ All interactive logic lives in `js/` modules; `index.html` ties them together.
 
 - No package manifest or tests; dependencies are documented in the root
   `README.md` (matplotlib, numpy, stdlib http.server).
-- Generated artifacts (`visualizations/`, `js/precalculated/`) are recreated by
-  `run.py` on each run — treat as disposable.
+- Generated artifacts (`visualizations/`, `js/precalculated/`,
+  `index.html.bak`) are recreated by `run.py` on each run — treat as disposable.
+  Its `css/styles.css` block append is skipped when the block is already present.
 
 ## How docs here are maintained
 
@@ -20,6 +21,7 @@ Root `README.md` covers purpose, features, and economics model. Keep
 
 ## Notes for agents
 
-- `index.html.bak` is a backup of the UI; do not treat as a second entry point.
+- `index.html.bak` is a generated, gitignored backup of the UI; do not treat as
+  a second entry point.
 - Verify GPU model numbering and defaults against `run.py` `main()` before
   documenting them.
