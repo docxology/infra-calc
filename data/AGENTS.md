@@ -1,7 +1,7 @@
 # AGENTS.md — `infra-calc/data`
 
-> Published copy of the local-only `projects/ongoing/DataTools/infra-calc` lane;
-> origin `github.com/docxology/infra-calc` — commit and push here normally.
+> Published copy of the local-only infra-calc lane; origin
+> `github.com/docxology/infra-calc` — commit and push here normally.
 
 ## What this is
 
