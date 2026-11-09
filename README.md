@@ -138,3 +138,7 @@ This project uses the following libraries:
 - Matplotlib for generating charts and visualizations
 - NumPy for numerical computations
 - Python's http.server for serving the web interface
+
+## License
+
+Released under the [MIT License](LICENSE).
