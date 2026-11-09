@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+type: software
+title: "infra-calc"
+authors:
+  - family-names: Friedman
+    given-names: Daniel Ari
+    orcid: "https://orcid.org/0000-0001-6232-9096"
+repository-code: "https://github.com/docxology/infra-calc"
+abstract: "ROI calculator for self-hosted LLM inference — models whether serving a 70B model on local GPUs pays off at a given per-minute rate, factoring VRAM, concurrent threads, utilization, hardware cost, and electricity. HTML/JS front end plus Python (NumPy, Matplotlib) break-even heatmaps."
+license: MIT
