@@ -2,6 +2,8 @@
 
 A sophisticated calculator for understanding the economics of running LLM inference infrastructure with enhanced visualizations and interactive features.
 
+![Profitability heatmap: concurrent threads versus price per minute](visualizations/heatmap_threads_vs_price.png)
+
 ## Purpose
 
 This tool helps answer questions like:
