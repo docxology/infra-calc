@@ -1,7 +1,7 @@
-# manuscript/
+# Infra-Calc software manuscript
 
-Manuscript status notes (`MANUSCRIPT_STATUS.md`).
+The numbered sections describe the calculator, modeling choices, one
+reproducible bundled scenario and interpretation. The figure comes from
+the ordinary Python generator.
 
-Contents: MANUSCRIPT_STATUS.md
-
-Part of the DataTools lane (published at `github.com/docxology/infra-calc`). Parent: `../README.md`.
+[Pinned render procedure](../reproduction/manuscript.md) · [Configuration](config.yaml) · [Bibliography](references.bib) · [Documentation index](../README.md)

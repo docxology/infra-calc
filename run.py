@@ -8,12 +8,13 @@ import threading
 import sys
 import matplotlib.pyplot as plt
 import numpy as np
+from functools import partial
 from pathlib import Path
 import argparse
 
-# Create visualizations directory if it doesn't exist
+PROJECT_ROOT = Path(__file__).resolve().parent
+LOOPBACK_HOST = "127.0.0.1"
 vis_dir = Path('visualizations')
-vis_dir.mkdir(exist_ok=True)
 
 # Default parameters based on the large LLM configuration
 DEFAULT_PARAMS = {
@@ -359,6 +360,8 @@ def create_visualizations(params, selected_gpu_model=None):
     Returns:
         Dictionary containing calculated results used for visualizations
     """
+    vis_dir.mkdir(exist_ok=True)
+
     # Use the selected GPU model if provided
     gpu_model = selected_gpu_model
     
@@ -1633,7 +1636,7 @@ def find_available_port(start_port=8000, max_attempts=20):
     
     while attempts < max_attempts:
         try:
-            with socketserver.TCPServer(("", port), None) as server:
+            with socketserver.TCPServer((LOOPBACK_HOST, port), None) as server:
                 server.server_close()
                 return port
         except OSError:
@@ -1643,13 +1646,8 @@ def find_available_port(start_port=8000, max_attempts=20):
     
     return None
 
-def start_server(port):
-    """
-    Start the HTTP server on the specified port
-    
-    Args:
-        port: Port number to start the server on
-    """
+def create_server(port):
+    """Serve this checkout on the local loopback interface."""
     class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         # Override log_message to provide more useful logging
         def log_message(self, format, *args):
@@ -1666,10 +1664,16 @@ def start_server(port):
     class QuietServer(socketserver.TCPServer):
         allow_reuse_address = True
     
-    httpd = QuietServer(("", port), CustomHTTPRequestHandler)
+    handler = partial(CustomHTTPRequestHandler, directory=str(PROJECT_ROOT))
+    return QuietServer((LOOPBACK_HOST, port), handler)
+
+
+def start_server(port):
+    """Run the calculator's local HTTP server."""
+    httpd = create_server(port)
     
     print(f"Starting HTTP server on port {port}...")
-    print(f"Access the calculator at: \033[94mhttp://localhost:{port}\033[0m")
+    print(f"Access the calculator at: \033[94mhttp://{LOOPBACK_HOST}:{port}\033[0m")
     
     try:
         httpd.serve_forever()
@@ -1693,6 +1697,9 @@ def main():
     # Process command line arguments
     parser = argparse.ArgumentParser(description='Infra-Calc: LLM Infrastructure Economics Calculator')
     parser.add_argument('--gpu', type=int, default=1, help='GPU model number (1-5)')
+    parser.add_argument(
+        '--generate-only', action='store_true', help='Write results and figures without opening the dashboard.'
+    )
     args = parser.parse_args()
     
     # Validate GPU selection
@@ -1847,15 +1854,17 @@ def main():
         # Count visualization files generated
         vis_files = list(vis_dir.glob('*.png'))
         print(f"✓ Generated {len(vis_files)} visualization files")
+        if args.generate_only:
+            return 0
         
         # Find an available port and start the server
         port = find_available_port()
         if port is None:
             print("\n❌ Error: Could not find an available port. Please check your network settings.")
-            return
+            return 1
         
         # Open the browser
-        url = f"http://localhost:{port}"
+        url = f"http://{LOOPBACK_HOST}:{port}"
         print(f"\n✓ Opening calculator in browser: {url}")
         
         # Display helpful instructions
@@ -1881,6 +1890,7 @@ def main():
         print(f"\n❌ Error generating visualizations: {e}")
         import traceback
         traceback.print_exc()
+        return 1
 
 if __name__ == "__main__":
-    main() 
+    raise SystemExit(main())
