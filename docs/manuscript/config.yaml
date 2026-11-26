@@ -1,0 +1,16 @@
+paper:
+  title: "Infra-Calc: Scenario Modeling for Local LLM Inference"
+  subtitle: "Price, utilization, concurrency and hardware costs"
+authors:
+  - name: "Daniel Ari Friedman"
+    orcid: "0000-0001-6232-9096"
+publication:
+  release_status: "unreleased"
+  repository_url: "https://github.com/docxology/infra-calc"
+  transmission_bookends:
+    enabled: false
+metadata:
+  language: en
+keywords: [inference, scenario modeling, hardware economics]
+render:
+  formats: {pdf: true, html: true, slides: false, docx: false, epub: false}

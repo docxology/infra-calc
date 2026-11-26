@@ -1,0 +1,8 @@
+{
+  "fig:infra-profitability-sweep": {
+    "filename": "heatmap_threads_vs_price.png",
+    "caption": "Monthly scenario result by price and thread count.",
+    "alt_text": "Heatmap with price along the horizontal axis and threads along the vertical axis. Under the generic defaults, red cells indicate lower modeled monthly profit and green cells indicate higher profit.",
+    "generated_by": "run.py"
+  }
+}
